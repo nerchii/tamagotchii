@@ -1,4 +1,3 @@
-import food.Food;
 import food.FoodItems;
 
 import java.util.Locale;
@@ -7,52 +6,84 @@ import java.util.Scanner;
 public class Main {
     static boolean playGame = true;
     public static void main(String[] args) {
-        Charachter ch1 = AUX.readFromBin();
+
+//        ------------manual test--------------
+//        Pet ch = new Pet("Bob");
+//        ch = checkPets(ch);
+//        chooseAction(ch);
+
+//        -------------------------------------
+
+        Pet ch1 = AUX.readFromBin();
         ch1 = checkPets(ch1);
         while (playGame) {
             chooseAction(ch1);
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-        public static void chooseAction(Charachter ch) {
+        public static void chooseAction(Pet ch) {
             Scanner sc = new Scanner(System.in);
+            ch.getAppearance();
             printMessages("What do you want to do?",
-                    "1) feed " + ch.getName(),
-                    "2) rename " + ch.getName(),
-                    "3) quit the game");
+                    "★ feed " + ch.getName(),
+                    "★ rename " + ch.getName(),
+                    "★ sleep " + "(" + ch.getName() + " is sleeping: " + ch.isSleeping() + ")",
+                    "★ wake up " + "(" + ch.getName() + " is awake: " + !ch.isSleeping() + ")",
+                    "★ " + ch.getName() + " info",
+                    "★ quit the game");
             String answer = sc.nextLine().toLowerCase(Locale.ROOT);
 
             switch (answer) {
                 case "feed":
                     ch.feed(FoodItems.SPINACH);
+                    AUX.writeToBin(ch);
                     break;
                 case "rename":
                     rename(ch);
+                    AUX.writeToBin(ch);
+                    break;
+                case "sleep":
+                    ch.sleep();
+                    AUX.writeToBin(ch);
+                    break;
+                case "wake up":
+                    ch.wakeUp();
+                    AUX.writeToBin(ch);
+                case "info":
+                    ch.info();
                     break;
                 case "quit":
                     System.out.println("Bye bye");
+                    AUX.writeToBin(ch);
                     playGame = false;
-                    break;
                 default:
-                    break;
+                    AUX.writeToBin(ch);
             }
         }
+
+
+
+
+
+
         /**
          * Checks whether a Tamagotchi pet exists and handles the appropriate game sequence.
          * <p>
-         * If the provided {@link Charachter} object {@code ch} is {@code null}, this method
+         * If the provided {@link Pet} object {@code ch} is {@code null}, this method
          * initiates the creation of a new pet by calling {@link #newPet()}.
          * If {@code ch} is not {@code null}, it welcomes the returning pet and interacts
          * with the user through the console, prompting for input and responding accordingly.
@@ -62,15 +93,15 @@ public class Main {
          * the player needs to create a new Tamagotchi or continue with an existing one.
          * </p>
          *
-         * @param ch the existing {@link Charachter} object representing the player's Tamagotchi;
+         * @param ch the existing {@link Pet} object representing the player's Tamagotchi;
          *           may be {@code null} if no pet exists yet
          */
-        public static Charachter checkPets(Charachter ch) {
+        public static Pet checkPets(Pet ch) {
             if (ch == null){
                 ch = newPet();
             } else {
                 printMessages("Hello, welcome back to tamagotchi!!");
-                ch.getAppearance();
+//                ch.getAppearance();
 //                Scanner sc = new Scanner(System.in);
 //                printMessages(ch.getName() + " has been waiting so loong to see you... where have you been? (mad)");
 //                String answer = sc.nextLine();
@@ -86,8 +117,8 @@ public class Main {
          * This method is intended to be called when the game starts and no existing
          * pet is found. It interacts with the user through the console, asking them
          * to name their new Tamagotchi. Once a name is entered, a new
-         * {@link Charachter} object is created and saved to a binary file using
-         * {@link AUX#writeToBin(Charachter)}.
+         * {@link Pet} object is created and saved to a binary file using
+         * {@link AUX#writeToBin(Pet)}.
          * </p>
          * <p>
          * <b>Note:</b> This method does <em>not</em> check whether a pet already exists.
@@ -95,7 +126,7 @@ public class Main {
          * method will create a new pet and overwrite any existing data.
          * </p>
          */
-        public static Charachter newPet() {
+        public static Pet newPet() {
             Scanner sc = new Scanner(System.in);
             printMessages(
                     "Hello, welcome to Tamagotchi!!",
@@ -106,13 +137,13 @@ public class Main {
                     "What do you wanna name it? "
             );
             String chName = sc.nextLine();
-            Charachter ch = new Charachter(chName);
+            Pet ch = new Pet(chName);
             printMessages("Greattt, good choice, surely " + chName + " is an uh * interesting * name but okay heh I won't police you.");
             AUX.writeToBin(ch);
             return ch;
         }
 
-        public static void rename(Charachter ch) {
+        public static void rename(Pet ch) {
             Scanner sc = new Scanner(System.in);
             System.out.println("Are you sure you want to rename " + ch.getName());
             String answer = sc.nextLine().toLowerCase();
