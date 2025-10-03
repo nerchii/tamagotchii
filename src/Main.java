@@ -14,7 +14,7 @@ public class Main {
 
 //        -------------------------------------
 
-        Pet ch1 = AUX.readFromBin();
+        Pet ch1 = AUX_CLS.readFromBin();
         ch1 = checkPets(ch1);
         while (playGame) {
             chooseAction(ch1);
@@ -50,28 +50,28 @@ public class Main {
             switch (answer) {
                 case "feed":
                     ch.feed(FoodItems.SPINACH);
-                    AUX.writeToBin(ch);
+                    AUX_CLS.writeToBin(ch);
                     break;
                 case "rename":
                     rename(ch);
-                    AUX.writeToBin(ch);
+                    AUX_CLS.writeToBin(ch);
                     break;
                 case "sleep":
                     ch.sleep();
-                    AUX.writeToBin(ch);
+                    AUX_CLS.writeToBin(ch);
                     break;
                 case "wake up":
                     ch.wakeUp();
-                    AUX.writeToBin(ch);
+                    AUX_CLS.writeToBin(ch);
                 case "info":
                     ch.info();
                     break;
                 case "quit":
                     System.out.println("Bye bye");
-                    AUX.writeToBin(ch);
+                    AUX_CLS.writeToBin(ch);
                     playGame = false;
                 default:
-                    AUX.writeToBin(ch);
+                    AUX_CLS.writeToBin(ch);
             }
         }
 
@@ -118,7 +118,7 @@ public class Main {
          * pet is found. It interacts with the user through the console, asking them
          * to name their new Tamagotchi. Once a name is entered, a new
          * {@link Pet} object is created and saved to a binary file using
-         * {@link AUX#writeToBin(Pet)}.
+         * {@link AUX_CLS#writeToBin(Pet)}.
          * </p>
          * <p>
          * <b>Note:</b> This method does <em>not</em> check whether a pet already exists.
@@ -139,7 +139,7 @@ public class Main {
             String chName = sc.nextLine();
             Pet ch = new Pet(chName);
             printMessages("Greattt, good choice, surely " + chName + " is an uh * interesting * name but okay heh I won't police you.");
-            AUX.writeToBin(ch);
+            AUX_CLS.writeToBin(ch);
             return ch;
         }
 
@@ -152,7 +152,7 @@ public class Main {
                 System.out.println("What would you like to call your pet? :");
                 answer = sc.nextLine();
                 ch.changeName(answer);
-                AUX.writeToBin(ch);
+                AUX_CLS.writeToBin(ch);
             }  else {
                 System.out.println("OkeyDokey, gonna ignore that.");
             }
