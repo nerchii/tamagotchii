@@ -16,7 +16,8 @@ public class Pet implements Serializable {
     private double sleep;
     private double happiness;
     private double health;
-    private double hygine;
+    private double hygiene;
+    private double boredom;
 
     private LocalDateTime lastMeal;
     private LocalDateTime sleepStart;
@@ -35,26 +36,27 @@ public class Pet implements Serializable {
         this.love = rand.nextDouble(80,100);
         this.sleep = rand.nextDouble(60,100);
         this.happiness = rand.nextDouble(80,100);
-        this.hygine = rand.nextDouble(80,100);
         this.health = rand.nextDouble(80,100);
+        this.hygiene = rand.nextDouble(80,100);
+        this.boredom = rand.nextDouble(20);
+
     }
 
-    public void feed(Food food){
-        if(this.hunger == 0){
+    public void feed(){
+        if(getHunger() == 0){
             System.out.println(getName() + " isn't hungry atm.");
         } else {
-            this.hunger -= food.getValue();
-            this.love += 15;
-            if (this.hunger <= 0){
-                this.hunger = 0;
-                System.out.println(getName() + " is full now.");
-            }
+            setHunger(getHunger() - 6);  //promjeni poslaje na value od food
+            setLove(getLove() + 3);
+            setHappiness(getHappiness() + 10);
+            setHealth(getHealth() + 2);  //napravi da ovisi o hrani
+
             this.lastMeal = LocalDateTime.now();
-            System.out.println("+" + food.getValue()+", " + getName() + " ate, hunger level at: " + this.hunger);  //napravi getter za hunger
+            System.out.println("+" + 6 +", " + getName() + " ate, hunger level at: " + (int)getHunger());
         }
     }
     public void sleep() {
-        if (this.sleep == 100) {
+        if (getSleep() == 100) {
             System.out.println(getName() + " isn't sleepy atm.");
         } else {
             if (isSleeping) {
@@ -80,12 +82,13 @@ public class Pet implements Serializable {
             this.isSleeping = false;
             this.sleepStart = null;
 
-            if ((this.sleep += timeSlept) >= 100){
-                this.sleep = 100;
-            } else {
-                this.sleep += timeSlept;
-            }
-            System.out.println(getName() + " woke up, sleep: " + getSleep());
+            setSleep(this.sleep + timeSlept);
+            setHealth(this.health + (timeSlept*2));
+            setBoredom(this.boredom - (timeSlept*2));
+            setHunger(this.hunger - (timeSlept*2));
+            setHygiene(this.hygiene - (timeSlept*2));
+
+            System.out.println(getName() + " woke up, sleep: " + (int)getSleep());
         }
     }
 
@@ -107,30 +110,85 @@ public class Pet implements Serializable {
 
 
 
+    public boolean isSleeping() {
+        return isSleeping;
+    }
 
+
+
+    // getters/setters
     public String getName() {
         return name;
     }
-
     private void setName(String name) {
         this.name = name;
     }
 
+
     public double getSleep() {
         return sleep;
+    }
+    public void setSleep(double sleep) {
+        if (sleep < 0) this.sleep = 0;
+        else if (sleep > 100) this.sleep = 100;
+        else this.sleep = sleep;
     }
 
     public double getHunger() {
         return hunger;
     }
-
-    public boolean isSleeping() {
-        return isSleeping;
+    public void setHunger(double hunger) {
+        if (hunger < 0) this.hunger = 0;
+        else if (hunger > 100) this.hunger = 100;
+        else this.hunger = hunger;
     }
-    //    private void setAppearance() {
-//        this.appearance = new String[]{"/\\_/\\", "( o.o )", " > ^ <"};
-//    }
 
+    public double getHealth() {
+        return health;
+    }
+    public void setHealth(double health) {
+        if (health < 0) this.health = 0;
+        else if (health > 100) this.health = 100;
+        else this.health = health;
+    }
+
+
+    public double getLove() {
+        return love;
+    }
+    public void setLove(double love) {
+        this.love = love;
+    }
+
+
+    public double getHappiness() {
+        return happiness;
+    }
+    public void setHappiness(double happiness) {
+        if (happiness < 0) this.happiness = 0;
+        else if (happiness > 100) this.happiness = 100;
+        else this.happiness = happiness;
+    }
+
+
+    public double getHygiene() {
+        return hygiene;
+    }
+    public void setHygiene(double hygiene) {
+        if (hygiene < 0) this.hygiene = 0;
+        else if (hygiene > 100) this.hygiene = 100;
+        else this.hygiene = hygiene;
+    }
+
+
+    public double getBoredom() {
+        return boredom;
+    }
+    public void setBoredom(double boredom) {
+        if (boredom < 0) this.boredom = 0;
+        else if (boredom > 100) this.boredom = 100;
+        else this.boredom = boredom;
+    }
 
     public void getAppearance() {
         for (String line : this.appearance) {
@@ -145,8 +203,8 @@ public class Pet implements Serializable {
         String lastMealStr = (lastMeal != null) ? lastMeal.format(formatter) : "never";
 
         return String.format(
-                "%s is %d years old. Hunger: %.0f, Love: %.0f, Sleep: %.0f, Happiness: %.0f, Health: %.0f, Hygiene: %.0f., last meal: %s ",
-                name, age, hunger, love, sleep, happiness, health, hygine,lastMealStr
+                "%s is %d years old. Hunger: %.0f, Love: %.0f, Sleep: %.0f, Happiness: %.0f, Health: %.0f, Hygiene: %.0f., last meal: %s, Boredom: %.0f ",
+                name, age, hunger, love, sleep, happiness, health, hygiene,lastMealStr,boredom
         );
     }
 }

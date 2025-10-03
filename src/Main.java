@@ -8,17 +8,23 @@ public class Main {
     public static void main(String[] args) {
 
 //        ------------manual test--------------
-//        Pet ch = new Pet("Bob");
-//        ch = checkPets(ch);
-//        chooseAction(ch);
+        Pet ch = new Pet("Bob");
+        ch = checkPets(ch);
+        ch.info();
+        ch.sleep();
+        ch.feed();
+        ch.info();
+        ch.wakeUp();
+        ch.info();
+
 
 //        -------------------------------------
 
-        Pet ch1 = AUX_CLS.readFromBin();
-        ch1 = checkPets(ch1);
-        while (playGame) {
-            chooseAction(ch1);
-        }
+//        Pet ch1 = AUX_CLS.readFromBin();
+//        ch1 = checkPets(ch1);
+//        while (playGame) {
+//            chooseAction(ch1);
+//        }
 
 
 
@@ -37,47 +43,69 @@ public class Main {
 
         public static void chooseAction(Pet ch) {
             Scanner sc = new Scanner(System.in);
+            System.out.println("============================");
+            System.out.println("What do you want to do?");
             ch.getAppearance();
-            printMessages("What do you want to do?",
-                    "★ feed " + ch.getName(),
-                    "★ rename " + ch.getName(),
-                    "★ sleep " + "(" + ch.getName() + " is sleeping: " + ch.isSleeping() + ")",
-                    "★ wake up " + "(" + ch.getName() + " is awake: " + !ch.isSleeping() + ")",
-                    "★ " + ch.getName() + " info",
-                    "★ quit the game");
-            String answer = sc.nextLine().toLowerCase(Locale.ROOT);
 
-            switch (answer) {
-                case "feed":
-                    ch.feed(FoodItems.SPINACH);
-                    AUX_CLS.writeToBin(ch);
-                    break;
-                case "rename":
-                    rename(ch);
-                    AUX_CLS.writeToBin(ch);
-                    break;
-                case "sleep":
-                    ch.sleep();
-                    AUX_CLS.writeToBin(ch);
-                    break;
-                case "wake up":
-                    ch.wakeUp();
-                    AUX_CLS.writeToBin(ch);
-                case "info":
-                    ch.info();
-                    break;
-                case "quit":
-                    System.out.println("Bye bye");
-                    AUX_CLS.writeToBin(ch);
-                    playGame = false;
-                default:
-                    AUX_CLS.writeToBin(ch);
+            if(ch.isSleeping()){
+                printMessages(
+                        "★ wake " + ch.getName() + " up ",
+                        "★ " + ch.getName() + " info",
+                        "★ quit the game",
+                        "============================"
+                );
+                String answer = sc.nextLine().toLowerCase(Locale.ROOT);
+                switch (answer) {
+                    case "wake up":
+                        ch.wakeUp();
+                        AUX_CLS.writeToBin(ch);
+                    case "info":
+                        ch.info();
+                        break;
+                    case "quit":
+                        System.out.println("Bye bye");
+                        AUX_CLS.writeToBin(ch);
+                        playGame = false;
+                    default:
+                        AUX_CLS.writeToBin(ch);
+                }
+
+            } else {
+                printMessages("★ feed " + ch.getName(),
+                        "★ rename " + ch.getName(),
+                        "★ sleep ",
+                        "★ " + ch.getName() + " info",
+                        "",
+                        "★ quit the game",
+                        "============================");
+                String answer = sc.nextLine().toLowerCase(Locale.ROOT);
+
+                switch (answer) {
+                    case "feed":
+                        ch.feed();
+                        AUX_CLS.writeToBin(ch);
+                        break;
+                    case "rename":
+                        rename(ch);
+                        AUX_CLS.writeToBin(ch);
+                        break;
+                    case "sleep":
+                        ch.sleep();
+                        AUX_CLS.writeToBin(ch);
+                        break;
+                    case "info":
+                        ch.info();
+                        break;
+                    case "quit":
+                        System.out.println("Bye bye");
+                        AUX_CLS.writeToBin(ch);
+                        playGame = false;
+                    default:
+                        AUX_CLS.writeToBin(ch);
+                }
             }
+
         }
-
-
-
-
 
 
         /**
