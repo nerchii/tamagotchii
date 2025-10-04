@@ -1,5 +1,5 @@
-import food.FoodItems;
-
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -8,38 +8,25 @@ public class Main {
     public static void main(String[] args) {
 
 //        ------------manual test--------------
-        Pet ch = new Pet("Bob");
-        ch = checkPets(ch);
-        ch.info();
-        ch.sleep();
-        ch.feed();
-        ch.info();
-        ch.wakeUp();
-        ch.info();
+//        Pet ch = new Pet("Bob");
+//        ch = checkPets(ch);
+//        ch.info();
+//        ch.feed();
+//
+//        ch.checkStats();
 
 
 //        -------------------------------------
-
-//        Pet ch1 = AUX_CLS.readFromBin();
-//        ch1 = checkPets(ch1);
-//        while (playGame) {
-//            chooseAction(ch1);
-//        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        Pet ch1 = AUX_CLS.readFromBin();
+        ch1 = checkPets(ch1);
+        while (playGame) {
+            chooseAction(ch1);
+            ch1.checkStats();
         }
+    }
+
+
+
 
         public static void chooseAction(Pet ch) {
             Scanner sc = new Scanner(System.in);
@@ -74,6 +61,8 @@ public class Main {
                 printMessages("★ feed " + ch.getName(),
                         "★ rename " + ch.getName(),
                         "★ sleep ",
+                        "★ play",
+                        "★ take a bath",
                         "★ " + ch.getName() + " info",
                         "",
                         "★ quit the game",
@@ -93,11 +82,20 @@ public class Main {
                         ch.sleep();
                         AUX_CLS.writeToBin(ch);
                         break;
+                    case "play":
+                        ch.playWithPet();
+                        AUX_CLS.writeToBin(ch);
+                        break;
+                    case "bath":
+                        ch.bath();
+                        AUX_CLS.writeToBin(ch);
+                        break;
                     case "info":
                         ch.info();
                         break;
                     case "quit":
                         System.out.println("Bye bye");
+                        ch.lastPlayed();
                         AUX_CLS.writeToBin(ch);
                         playGame = false;
                     default:
@@ -125,21 +123,41 @@ public class Main {
          *           may be {@code null} if no pet exists yet
          */
         public static Pet checkPets(Pet ch) {
-            if (ch == null){
+            if (ch == null) {
                 ch = newPet();
             } else {
                 printMessages("Hello, welcome back to tamagotchi!!");
-//                ch.getAppearance();
-//                Scanner sc = new Scanner(System.in);
-//                printMessages(ch.getName() + " has been waiting so loong to see you... where have you been? (mad)");
-//                String answer = sc.nextLine();
-//                System.out.println("Mhm,, okay, I wouldn't say " + answer.toLowerCase() + " is a valid excuse but whatever.");
+                ch.getAppearance();
+
+                LocalDateTime offTime = ch.getOffTime();
+                if (offTime != null) {
+                    Duration duration = Duration.between(offTime, LocalDateTime.now());
+                    long hours = duration.toHours();
+                    long minutes = duration.toMinutes();
+
+                    if (hours > 0) {
+                        //test
+                        ch.info();
+                        lowerStats(ch,hours);
+                        ch.info();
+                        System.out.println("ako je proslo vise od sat trebala bi biti razlika na stats");
+
+
+                        System.out.println("You last played " + hours + " hours " + (minutes) % 60 + " minutes ago.");
+                    } else {
+                        System.out.println("You last played " + minutes + " minutes ago.");
+                    }
+
+                    if (duration.toMinutes() > 15) {
+                        Scanner sc = new Scanner(System.in);
+                        printMessages(ch.getName() + " has been waiting so long to see you... where have you been? (mad)");
+                    }
+                }
             }
             return ch;
         }
 
-
-        /**
+    /**
          * Starts the sequence for creating a new Tamagotchi pet.
          * <p>
          * This method is intended to be called when the game starts and no existing
@@ -171,6 +189,10 @@ public class Main {
             return ch;
         }
 
+        public static void  lowerStats(Pet ch, long amount) {
+            ch.changeStats(amount);
+        }
+
         public static void rename(Pet ch) {
             Scanner sc = new Scanner(System.in);
             System.out.println("Are you sure you want to rename " + ch.getName());
@@ -186,15 +208,10 @@ public class Main {
             }
         }
 
-
         public static void printMessages(String... messages) {
             for (String msg : messages) {
                 System.out.println(msg);
             }
         }
-
-
-
-
 }
 //}
