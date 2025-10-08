@@ -1,4 +1,4 @@
-import com.sun.source.tree.ForLoopTree;
+//import com.sun.source.tree.ForLoopTree;
 import food.Food;
 import food.FoodItems;
 import java.io.Serializable;
@@ -13,31 +13,26 @@ public class Pet implements Serializable {
     private int age;
     private String name;
 
-    private String[] appearance;
-
-    private double hunger;        // 0 good 100 bad
-    private double love;          // 100 good 0 bad
-    private double sleep;         // 100 good 0 bad
-    private double happiness;     // 100 good 0 bad
-    private double health;       // 100 good 0 bad
-    private double hygiene;      // 100 good 0 bad
-    private double boredom;      // 0 good 100 bad
+    private Appearance appearance;
+    private double hunger;
+    private double love;
+    private double sleep;
+    private double happiness;
+    private double health;
+    private double hygiene;
+    private double boredom;
 
     private LocalDateTime lastMeal;
     private LocalDateTime sleepStart;
     private LocalDateTime offTime;
 
     private boolean isSleeping;
-
-
-
     Random rand = new Random();
 
     public Pet(String name) {
         this.age = rand.nextInt(2);
         this.name = name;
-        this.appearance = new String[]{" /\\_/\\", "( o.o )", " > ^ <"};  //default
-
+        this.appearance = new Appearance();
         this.hunger = rand.nextDouble(10);
         this.lastMeal = null;
         this.love = rand.nextDouble(80,100);
@@ -46,8 +41,6 @@ public class Pet implements Serializable {
         this.health = rand.nextDouble(80,100);
         this.hygiene = rand.nextDouble(80,100);
         this.boredom = rand.nextDouble(20);
-
-
     }
 
     public void feed(){
@@ -73,7 +66,12 @@ public class Pet implements Serializable {
             setHealth(getHealth() + 2);  //napravi da ovisi o hrani
 
             this.lastMeal = LocalDateTime.now();
+
+            appearance.setCurrentLook(Appearance.eating);
+            getAppearance();
             System.out.println(getName() + " ate, hunger level at: " + (int)getHunger());
+
+            appearance.setCurrentLook(Appearance.defaultLook);
         }
     }
     public void sleep() {
@@ -86,6 +84,7 @@ public class Pet implements Serializable {
             }
             this.sleepStart = LocalDateTime.now();
             this.isSleeping = true;
+            appearance.setCurrentLook(Appearance.sleepy);
             System.out.println(getName() + " went to sleep mimimim");
         }
     }
@@ -109,6 +108,7 @@ public class Pet implements Serializable {
             setHunger(getHunger() + (timeSlept*2));
             setHygiene(getHygiene() - (timeSlept*2));
 
+            appearance.setCurrentLook(Appearance.happy);
             System.out.println(getName() + " woke up, sleep: " + (int)getSleep());
         }
     }
@@ -121,7 +121,9 @@ public class Pet implements Serializable {
             case 1 -> System.out.println(getName() + " is trying to escape the bath, slippery little guy");
             case 2 -> System.out.println(getName() + " is singing in the shower");
         }
-
+        appearance.setCurrentLook(Appearance.playful);
+        getAppearance();
+        appearance.setCurrentLook(Appearance.defaultLook);
         setHygiene(getHygiene()+15);
         setHappiness(getHappiness()+10);
         setHealth(getHealth()+3);
@@ -129,6 +131,7 @@ public class Pet implements Serializable {
         setLove(getLove()+2);
     }
     public void playWithPet() {
+        appearance.setCurrentLook(Appearance.playful);
         Random rand = new Random();
         int game = rand.nextInt(3);
 
@@ -154,6 +157,8 @@ public class Pet implements Serializable {
                 setHealth(getHealth() + 2);
             }
         }
+        appearance.setCurrentLook(Appearance.defaultLook);
+        getAppearance();
     }
 
     public void changeName(String newName) {
@@ -162,13 +167,8 @@ public class Pet implements Serializable {
     }
 
     public void info(){
-        System.out.println(toString());
+        System.out.println(this);
     }
-
-
-
-
-
 
     public void checkStats() {
         boolean alert = false;
@@ -199,6 +199,8 @@ public class Pet implements Serializable {
         }
 
         if (alert) {
+            appearance.setCurrentLook(Appearance.sad);
+            getAppearance();
             info();
         }
     }
@@ -206,7 +208,6 @@ public class Pet implements Serializable {
     public void lastPlayed() {
         this.offTime = LocalDateTime.now();
         AUX_CLS.writeToBin(this);
-
     }
 
 
@@ -341,14 +342,12 @@ public class Pet implements Serializable {
         return offTime;
     }
 
-
     public void getAppearance() {
-        for (String line : this.appearance) {
+        for (String line : appearance.getCurrentLook()) {
             System.out.println(line);
         }
     }
-
-//    private void maxAllStats(Pet ch) {
+    //    private void maxAllStats(Pet ch) {
 //        this.hunger = 100;
 //        this.lastMeal = LocalDateTime.now();
 //        this.love = 100;

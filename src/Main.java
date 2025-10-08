@@ -5,10 +5,13 @@ import java.util.Scanner;
 
 public class Main {
     static boolean playGame = true;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
 //        ------------manual test--------------
 //        Pet ch = new Pet("Bob");
+//        TestPet testPet = new TestPet("Poor lil thing");
+//        testPet.checkStats();
+
 //        ch = checkPets(ch);
 //        ch.info();
 //        ch.feed();
@@ -24,11 +27,8 @@ public class Main {
             ch1.checkStats();
         }
     }
-
-
-
-
-        public static void chooseAction(Pet ch) {
+        public static void chooseAction(Pet ch) throws InterruptedException {
+            Thread.sleep(500);
             Scanner sc = new Scanner(System.in);
             System.out.println("============================");
             System.out.println("What do you want to do?");
@@ -42,20 +42,24 @@ public class Main {
                         "============================"
                 );
                 String answer = sc.nextLine().toLowerCase(Locale.ROOT);
-                switch (answer) {
-                    case "wake up":
-                        ch.wakeUp();
-                        AUX_CLS.writeToBin(ch);
-                    case "info":
-                        ch.info();
-                        break;
-                    case "quit":
-                        System.out.println("Bye bye");
-                        AUX_CLS.writeToBin(ch);
-                        playGame = false;
-                    default:
-                        AUX_CLS.writeToBin(ch);
+
+                if (answer.toLowerCase().contains("wake")) {
+                    ch.wakeUp();
+                    AUX_CLS.writeToBin(ch);
+
+                } else if (answer.toLowerCase().contains("info")) {
+                    ch.info();
+                    AUX_CLS.writeToBin(ch);
+
+                } else if (answer.toLowerCase().contains("quit")) {
+                    System.out.println("Bye bye");
+                    AUX_CLS.writeToBin(ch);
+                    playGame = false;
+
+                } else {
+                    AUX_CLS.writeToBin(ch);
                 }
+
 
             } else {
                 printMessages("★ feed " + ch.getName(),
@@ -69,38 +73,40 @@ public class Main {
                         "============================");
                 String answer = sc.nextLine().toLowerCase(Locale.ROOT);
 
-                switch (answer) {
-                    case "feed":
-                        ch.feed();
-                        AUX_CLS.writeToBin(ch);
-                        break;
-                    case "rename":
-                        rename(ch);
-                        AUX_CLS.writeToBin(ch);
-                        break;
-                    case "sleep":
-                        ch.sleep();
-                        AUX_CLS.writeToBin(ch);
-                        break;
-                    case "play":
-                        ch.playWithPet();
-                        AUX_CLS.writeToBin(ch);
-                        break;
-                    case "bath":
-                        ch.bath();
-                        AUX_CLS.writeToBin(ch);
-                        break;
-                    case "info":
-                        ch.info();
-                        break;
-                    case "quit":
-                        System.out.println("Bye bye");
-                        ch.lastPlayed();
-                        AUX_CLS.writeToBin(ch);
-                        playGame = false;
-                    default:
-                        AUX_CLS.writeToBin(ch);
+                if (answer.toLowerCase().contains("feed")) {
+                    ch.feed();
+                    AUX_CLS.writeToBin(ch);
+
+                } else if (answer.toLowerCase().contains("rename")) {
+                    rename(ch);
+                    AUX_CLS.writeToBin(ch);
+
+                } else if (answer.toLowerCase().contains("sleep")) {
+                    ch.sleep();
+                    AUX_CLS.writeToBin(ch);
+
+                } else if (answer.toLowerCase().contains("play")) {
+                    ch.playWithPet();
+                    AUX_CLS.writeToBin(ch);
+
+                } else if (answer.toLowerCase().contains("bath")) {
+                    ch.bath();
+                    AUX_CLS.writeToBin(ch);
+
+                } else if (answer.toLowerCase().contains("info")) {
+                    ch.info();
+
+                } else if (answer.toLowerCase().contains("quit")) {
+                    System.out.println("Bye bye");
+                    ch.lastPlayed();
+                    AUX_CLS.writeToBin(ch);
+                    playGame = false;
+
+                } else {
+                    System.out.println("huh...didn't get that, can you repeater yourself?");
+                    AUX_CLS.writeToBin(ch);
                 }
+
             }
 
         }
@@ -127,7 +133,6 @@ public class Main {
                 ch = newPet();
             } else {
                 printMessages("Hello, welcome back to tamagotchi!!");
-                ch.getAppearance();
 
                 LocalDateTime offTime = ch.getOffTime();
                 if (offTime != null) {
