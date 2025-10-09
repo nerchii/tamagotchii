@@ -46,28 +46,29 @@ public class Pet implements Serializable {
         if(getHunger() == 0){
             System.out.println(getName() + " isn't hungry atm.");
         } else {
-
             FoodItems foodItems = new FoodItems("foodList.txt");
 
             Scanner sc = new Scanner(System.in);
             System.out.println("What do you want to feed " + getName() + ":");
             String choice = sc.nextLine().trim();
 
-            FoodItems chosenFood = foodItems.checkFood(choice);
+            boolean exists = foodItems.checkFood(choice);
 
+            if (exists) {
+                setHunger(getHunger() - rand.nextInt(2,15));
+                setLove(getLove() + rand.nextInt(5,10));
+                setHappiness(getHappiness() + rand.nextInt(5,15));
+                setHealth(getHealth() + rand.nextInt(3,10));
+                this.lastMeal = LocalDateTime.now();
 
+                appearance.setCurrentLook(Appearance.eating);
+                getAppearance();
+                System.out.println(getName() + " ate, hunger level at: " + (int)getHunger());
 
-//            setHunger(getHunger() - 6);  //promjeni poslaje na value od food
-//            setLove(getLove() + 3);
-//            setHappiness(getHappiness() + 10);
-//            setHealth(getHealth() + 2);
-//            this.lastMeal = LocalDateTime.now();
-//
-//            appearance.setCurrentLook(Appearance.eating);
-//            getAppearance();
-//            System.out.println(getName() + " ate, hunger level at: " + (int)getHunger());
-//
-//            appearance.setCurrentLook(Appearance.defaultLook);
+                appearance.setCurrentLook(Appearance.defaultLook);
+            } else {
+                foodItems.addFood(choice);
+            }
         }
     }
     public void sleep() {

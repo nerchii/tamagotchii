@@ -4,9 +4,9 @@ public class Food {
     private String foodName;
     private int value;
 
-    protected void chooseFood(){
+    protected void chooseFood(){}
 
-    }
+
     protected Food(String foodName, int value) {
         this.foodName = foodName;
         this.value = value;
