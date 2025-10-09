@@ -1,23 +1,35 @@
 package food;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class FoodItems {
-    private List<Food> foodList = new ArrayList<>();
+    private Set<String> foodSet = new HashSet<>();
 
-    public FoodItems() {
-        foodList.add((new Food("Apple", 3)));
-        foodList.add((new Food("Banana", 5)));
-        foodList.add((new Food("Burgir", 7)));
-        foodList.add((new Food("Orange juice", 2)));
+    public FoodItems(String filePath) {
+        loadFoodsFromFile(filePath);
     }
 
-    public List<Food> availableFood (){
-        List<Food> available = new ArrayList<>();
-        for (Food food : foodList) {
-            available.add((food));
+    private void loadFoodsFromFile(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String content = br.readLine();
+            if (content != null) {
+                String[] foods = content.split(",");
+                for (String food : foods) {
+                    foodSet.add(food.trim().toLowerCase());
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading food list: " + e.getMessage());
         }
-        return available;
+    }
+
+    public FoodItems checkFood(String foodName) {
+        if (foodSet.contains(foodName.toLowerCase())) {
+            System.out.println(foodName + " is available.");
+        } else {
+            System.out.println("Sorry, "+ foodName + " is not in the food list.");
+        }
+        return null;
     }
 }

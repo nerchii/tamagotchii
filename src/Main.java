@@ -15,7 +15,6 @@ public class Main {
 //        ch = checkPets(ch);
 //        ch.info();
 //        ch.feed();
-//
 //        ch.checkStats();
 
 
@@ -24,9 +23,12 @@ public class Main {
         ch1 = checkPets(ch1);
         while (playGame) {
             chooseAction(ch1);
+            AUX_CLS.writeToBin(ch1);
             ch1.checkStats();
         }
     }
+
+
         public static void chooseAction(Pet ch) throws InterruptedException {
             Thread.sleep(500);
             Scanner sc = new Scanner(System.in);
@@ -45,19 +47,19 @@ public class Main {
 
                 if (answer.toLowerCase().contains("wake")) {
                     ch.wakeUp();
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
 
                 } else if (answer.toLowerCase().contains("info")) {
                     ch.info();
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
 
                 } else if (answer.toLowerCase().contains("quit")) {
                     System.out.println("Bye bye");
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
                     playGame = false;
 
                 } else {
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
                 }
 
 
@@ -75,23 +77,23 @@ public class Main {
 
                 if (answer.toLowerCase().contains("feed")) {
                     ch.feed();
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
 
                 } else if (answer.toLowerCase().contains("rename")) {
                     rename(ch);
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
 
                 } else if (answer.toLowerCase().contains("sleep")) {
                     ch.sleep();
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
 
                 } else if (answer.toLowerCase().contains("play")) {
                     ch.playWithPet();
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
 
                 } else if (answer.toLowerCase().contains("bath")) {
                     ch.bath();
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
 
                 } else if (answer.toLowerCase().contains("info")) {
                     ch.info();
@@ -99,12 +101,12 @@ public class Main {
                 } else if (answer.toLowerCase().contains("quit")) {
                     System.out.println("Bye bye");
                     ch.lastPlayed();
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
                     playGame = false;
 
                 } else {
                     System.out.println("huh...didn't get that, can you repeater yourself?");
-                    AUX_CLS.writeToBin(ch);
+//                    AUX_CLS.writeToBin(ch);
                 }
 
             }
@@ -145,7 +147,6 @@ public class Main {
                         ch.info();
                         lowerStats(ch,hours);
                         ch.info();
-                        System.out.println("ako je proslo vise od sat trebala bi biti razlika na stats");
 
 
                         System.out.println("You last played " + hours + " hours " + (minutes) % 60 + " minutes ago.");

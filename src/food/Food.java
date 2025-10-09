@@ -1,11 +1,8 @@
 package food;
 
-import java.util.StringJoiner;
-
 public class Food {
     private String foodName;
     private int value;
-//    private int levelRequirement;  //koji level mora biti
 
     protected void chooseFood(){
 
@@ -13,7 +10,6 @@ public class Food {
     protected Food(String foodName, int value) {
         this.foodName = foodName;
         this.value = value;
-//        this.levelRequirement = levelRequirement;
     }
 
     public String getFoodName() {

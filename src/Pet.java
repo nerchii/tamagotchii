@@ -1,4 +1,3 @@
-//import com.sun.source.tree.ForLoopTree;
 import food.Food;
 import food.FoodItems;
 import java.io.Serializable;
@@ -48,30 +47,27 @@ public class Pet implements Serializable {
             System.out.println(getName() + " isn't hungry atm.");
         } else {
 
-            FoodItems foodItems = new FoodItems();
-            List<Food> foods = foodItems.availableFood();
-
-            for (Food f : foods) {
-                System.out.println(f);
-            }
+            FoodItems foodItems = new FoodItems("foodList.txt");
 
             Scanner sc = new Scanner(System.in);
-            System.out.println("Choose what do you want to feed " + getName() + ":");
-            String choice = sc.nextLine();
+            System.out.println("What do you want to feed " + getName() + ":");
+            String choice = sc.nextLine().trim();
+
+            FoodItems chosenFood = foodItems.checkFood(choice);
 
 
-            setHunger(getHunger() - 6);  //promjeni poslaje na value od food
-            setLove(getLove() + 3);
-            setHappiness(getHappiness() + 10);
-            setHealth(getHealth() + 2);  //napravi da ovisi o hrani
 
-            this.lastMeal = LocalDateTime.now();
-
-            appearance.setCurrentLook(Appearance.eating);
-            getAppearance();
-            System.out.println(getName() + " ate, hunger level at: " + (int)getHunger());
-
-            appearance.setCurrentLook(Appearance.defaultLook);
+//            setHunger(getHunger() - 6);  //promjeni poslaje na value od food
+//            setLove(getLove() + 3);
+//            setHappiness(getHappiness() + 10);
+//            setHealth(getHealth() + 2);
+//            this.lastMeal = LocalDateTime.now();
+//
+//            appearance.setCurrentLook(Appearance.eating);
+//            getAppearance();
+//            System.out.println(getName() + " ate, hunger level at: " + (int)getHunger());
+//
+//            appearance.setCurrentLook(Appearance.defaultLook);
         }
     }
     public void sleep() {
