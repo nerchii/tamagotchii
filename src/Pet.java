@@ -6,6 +6,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.Scanner;
 
+
+/**
+ * Represents a virtual Tamagotchi pet with dynamic stats such as hunger, sleep,
+ * happiness, and health.
+ * <p>
+ * The {@code Pet} class provides all main behaviors and interactions that a player
+ * can perform — feeding, sleeping, playing, bathing, and renaming.
+ * It also persists key information like the pet’s state and offline time.
+ * </p>
+ * <p>
+ * Each pet maintains internal limits for attributes (0–100) and automatically
+ * adjusts related stats when one becomes too high or too low.
+ * </p>
+ */
 public class Pet implements Serializable {
     private int age;
     private String name;
@@ -40,11 +54,18 @@ public class Pet implements Serializable {
         this.boredom = rand.nextDouble(20);
     }
 
+    /**
+     * Feeds the pet with a chosen food item.
+     * <p>
+     * Checks if the food exists in the food list using {@link FoodItems}. If not,
+     * offers to add it.
+     * </p>
+     */
     public void feed(){
         if(getHunger() == 0){
             System.out.println(getName() + " isn't hungry atm.");
         } else {
-            FoodItems foodItems = new FoodItems("foodList.txt");
+            FoodItems foodItems = new FoodItems();
 
             Scanner sc = new Scanner(System.in);
             System.out.println("What do you want to feed " + getName() + ":");
@@ -60,6 +81,9 @@ public class Pet implements Serializable {
             }
         }
     }
+    /**
+     * Applies the effects of eating to the pet’s stats and displays a message.
+     */
     public void giveFood(){
         setHunger(getHunger() - rand.nextInt(2,15));
         setLove(getLove() + rand.nextInt(5,10));
@@ -73,6 +97,9 @@ public class Pet implements Serializable {
         appearance.setCurrentLook(Appearance.defaultLook);
     }
 
+    /**
+     * Puts the pet to sleep if it is tired enough.
+     */
     public void sleep() {
         if (getSleep() == 100) {
             System.out.println(getName() + " isn't sleepy atm.");
@@ -88,6 +115,10 @@ public class Pet implements Serializable {
         }
     }
 
+
+    /**
+     * Wakes the pet up if it has slept long enough, restoring stats accordingly.
+     */
     public void wakeUp() {
         if (!isSleeping) {
             System.out.println(getName() + " is awake already smh.");
@@ -112,6 +143,9 @@ public class Pet implements Serializable {
         }
     }
 
+    /**
+     * Gives the pet a bath, improving hygiene and mood.
+     */
     public void bath() {
         int interaction = rand.nextInt(3);
         switch(interaction) {
@@ -129,6 +163,11 @@ public class Pet implements Serializable {
         setBoredom(getBoredom()-4);
         setLove(getLove()+2);
     }
+
+
+    /**
+     * Lets the pet play a random mini-activity, increasing happiness and reducing boredom.
+     */
     public void playWithPet() {
         appearance.setCurrentLook(Appearance.playful);
         int game = rand.nextInt(3);
@@ -159,6 +198,7 @@ public class Pet implements Serializable {
         getAppearance();
     }
 
+
     public void changeName(String newName) {
         setName(newName);
         System.out.println("Name successfully changed!");
@@ -168,6 +208,10 @@ public class Pet implements Serializable {
         System.out.println(this);
     }
 
+
+    /**
+     * Checks for low or critical stat values and prints warnings if necessary.
+     */
     public void checkStats() {
         boolean alert = false;
 

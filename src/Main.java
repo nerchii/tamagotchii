@@ -3,10 +3,25 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.Scanner;
 
+/**
+ * The {@code Main} class serves as the main entry point for the Tamagotchi game.
+ * <p>
+ * It handles the main game loop, user interactions, and transitions between pet actions such as
+ * feeding, playing, sleeping, and renaming. It also manages pet persistence using {@link AUX_CLS}
+ * to read and write pet data to a binary file.
+ * </p>
+ */
 public class Main {
     static boolean playGame = true;
     private static final Scanner sc = new Scanner(System.in);
 
+    /**
+     * Entry point for the Tamagotchi game.
+     * <p>
+     * This method initializes the pet (either loading an existing one or creating a new one)
+     * and runs the main game loop, allowing the player to interact with their pet.
+     * </p>
+     */
     public static void main(String[] args) throws InterruptedException {
 
 //        ------------manual test--------------
@@ -29,7 +44,16 @@ public class Main {
         }
     }
 
-
+        /**
+         * Presents the player with a list of possible actions to perform with their pet.
+         * <p>
+         * If the pet is sleeping, the available actions are limited. Otherwise, the player can feed,
+         * rename, play with, bathe, or check the pet's info. Player input is parsed by keyword.
+         * </p>
+         *
+         * @param ch the pet currently being interacted with
+         * @throws InterruptedException if the delay before showing options is interrupted
+         */
         public static void chooseAction(Pet ch) throws InterruptedException {
             Thread.sleep(500);
             System.out.println("============================");
@@ -90,6 +114,16 @@ public class Main {
             }
         }
 
+        /**
+         * Initializes the pet for the session.
+         * <p>
+         * If no pet data is found, it creates a new one. Otherwise, it loads the existing pet
+         * and adjusts its stats based on the time passed since the last session.
+         * </p>
+         *
+         * @param ch the loaded pet object, or {@code null} if none exists
+         * @return a valid {@link Pet} instance ready for interaction
+         */
         public static Pet initializePet(Pet ch) {
             if (ch == null) {
                 ch = createNewPet();
@@ -100,6 +134,16 @@ public class Main {
             return ch;
         }
 
+
+        /**
+         * Handles the logic when returning to the game after being offline.
+         * <p>
+         * Calculates the time elapsed since the pet was last active and lowers its stats accordingly.
+         * If too much time has passed the game may react to being ignored.
+         * </p>
+         *
+         * @param ch the pet being reactivated
+         */
         public static void returnFromOffLine(Pet ch){
             LocalDateTime offTime = ch.getOffTime();
             if (offTime != null) {
@@ -125,6 +169,14 @@ public class Main {
             }
         }
 
+        /**
+         * Creates a new pet through user input.
+         * <p>
+         * Prompts the player to name their pet and saves it using {@link AUX_CLS#writeToBin(Pet)}.
+         * </p>
+         *
+         * @return a new {@link Pet} instance
+         */
         public static Pet createNewPet() {
             printMessages(
                     "Hello, welcome to Tamagotchi!!",

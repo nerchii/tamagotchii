@@ -1,16 +1,22 @@
 package food;
-
 import java.io.*;
 import java.util.*;
 
+
+/**
+ * Manages a list of food items that a pet can eat.
+ * Foods are stored in a file and loaded into memory at runtime.
+ */
 public class FoodItems {
+    private static final String filePath = "bin/logs.bin";
     private Set<String> foodSet = new HashSet<>();
 
-    public FoodItems(String filePath) {
-        loadFoodsFromFile(filePath);
+    public FoodItems() {
+        loadFoodsFromFile();
     }
 
-    private void loadFoodsFromFile(String filePath) {
+    /** Loads food items from the file into memory */
+    private void loadFoodsFromFile() {
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String content = br.readLine();
             if (content != null) {
@@ -23,7 +29,9 @@ public class FoodItems {
             System.out.println("Error loading food list: " + e.getMessage());
         }
     }
-    private void addFoodToFile(String filePath, String newFood) {
+
+    /** Adds a new food to the file and in-memory set */
+    private void addFoodToFile(String newFood) {
         try { StringBuilder sb = new StringBuilder();
             try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
                 String content = br.readLine();
@@ -41,7 +49,11 @@ public class FoodItems {
         }
     }
 
-
+    /**
+     * Checks if food exists in the set.
+     * @param foodName the name of the food
+     * @return true if the food exists, false otherwise
+     */
     public boolean checkFood(String foodName) {
         if (foodSet.contains(foodName.toLowerCase())) {
 //            System.out.println(foodName + " is available.");
@@ -51,13 +63,19 @@ public class FoodItems {
             return false;
         }
     }
+
+    /**
+     * Prompts the user to add a new food to the list.
+     * @param foodName the food to add
+     * @return true if added, false otherwise
+     */
     public boolean addFood(String foodName) {
         System.out.println("Is " + foodName + " food?, Do you want to add it to the list?");
         Scanner sc = new Scanner(System.in);
-        String answer = sc.nextLine();
+        String answer = sc.nextLine().toLowerCase();
 
         if(answer.toLowerCase().contains("yes")) {
-            addFoodToFile("foodList.txt",foodName);
+            addFoodToFile(foodName);
             System.out.println("Added!! :33");
             return true;
         }
