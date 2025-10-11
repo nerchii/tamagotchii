@@ -51,7 +51,7 @@ public class FoodItems {
             return false;
         }
     }
-    public void addFood(String foodName) {
+    public boolean addFood(String foodName) {
         System.out.println("Is " + foodName + " food?, Do you want to add it to the list?");
         Scanner sc = new Scanner(System.in);
         String answer = sc.nextLine();
@@ -59,9 +59,10 @@ public class FoodItems {
         if(answer.toLowerCase().contains("yes")) {
             addFoodToFile("foodList.txt",foodName);
             System.out.println("Added!! :33");
+            return true;
         }
         if (answer.toLowerCase().contains("no")) {
             System.out.println("Okay, ever mind.");
-        }
+        }return false;
     }
 }

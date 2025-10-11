@@ -1,10 +1,8 @@
-import food.Food;
 import food.FoodItems;
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -26,7 +24,7 @@ public class Pet implements Serializable {
     private LocalDateTime offTime;
 
     private boolean isSleeping;
-    Random rand = new Random();
+    private final Random rand = new Random();
 
     public Pet(String name) {
         this.age = rand.nextInt(2);
@@ -54,23 +52,27 @@ public class Pet implements Serializable {
 
             boolean exists = foodItems.checkFood(choice);
 
-            if (exists) {
-                setHunger(getHunger() - rand.nextInt(2,15));
-                setLove(getLove() + rand.nextInt(5,10));
-                setHappiness(getHappiness() + rand.nextInt(5,15));
-                setHealth(getHealth() + rand.nextInt(3,10));
-                this.lastMeal = LocalDateTime.now();
-
-                appearance.setCurrentLook(Appearance.eating);
-                getAppearance();
-                System.out.println(getName() + " ate, hunger level at: " + (int)getHunger());
-
-                appearance.setCurrentLook(Appearance.defaultLook);
-            } else {
-                foodItems.addFood(choice);
+            if (exists) { giveFood(); } else {
+                boolean added = foodItems.addFood(choice);
+                if (added){
+                    giveFood();
+                }
             }
         }
     }
+    public void giveFood(){
+        setHunger(getHunger() - rand.nextInt(2,15));
+        setLove(getLove() + rand.nextInt(5,10));
+        setHappiness(getHappiness() + rand.nextInt(5,15));
+        setHealth(getHealth() + rand.nextInt(3,10));
+        this.lastMeal = LocalDateTime.now();
+
+        appearance.setCurrentLook(Appearance.eating);
+        getAppearance();
+        System.out.println(getName() + " ate, hunger level at: " + (int)getHunger());
+        appearance.setCurrentLook(Appearance.defaultLook);
+    }
+
     public void sleep() {
         if (getSleep() == 100) {
             System.out.println(getName() + " isn't sleepy atm.");
@@ -111,7 +113,6 @@ public class Pet implements Serializable {
     }
 
     public void bath() {
-        Random rand = new Random();
         int interaction = rand.nextInt(3);
         switch(interaction) {
             case 0 -> System.out.println(getName() + " is enjoying the bath...splish splash :3");
@@ -121,6 +122,7 @@ public class Pet implements Serializable {
         appearance.setCurrentLook(Appearance.playful);
         getAppearance();
         appearance.setCurrentLook(Appearance.defaultLook);
+
         setHygiene(getHygiene()+15);
         setHappiness(getHappiness()+10);
         setHealth(getHealth()+3);
@@ -129,7 +131,6 @@ public class Pet implements Serializable {
     }
     public void playWithPet() {
         appearance.setCurrentLook(Appearance.playful);
-        Random rand = new Random();
         int game = rand.nextInt(3);
 
         switch(game) {
@@ -194,7 +195,6 @@ public class Pet implements Serializable {
             System.out.println("- Reminder: " + getName() + " needs a bath.");
             alert = true;
         }
-
         if (alert) {
             appearance.setCurrentLook(Appearance.sad);
             getAppearance();
@@ -206,9 +206,6 @@ public class Pet implements Serializable {
         this.offTime = LocalDateTime.now();
         AUX_CLS.writeToBin(this);
     }
-
-
-
 
     public boolean isSleeping() {
         return isSleeping;
@@ -242,6 +239,7 @@ public class Pet implements Serializable {
         }
     }
 
+
     public double getHunger() {
         return hunger;
     }
@@ -258,6 +256,7 @@ public class Pet implements Serializable {
             setLove(getLove() - amount);
         }
     }
+
 
     public double getHealth() {
         return health;
@@ -335,6 +334,8 @@ public class Pet implements Serializable {
             setLove(getLove() - amount);
         }
     }
+
+
     public LocalDateTime getOffTime() {
         return offTime;
     }
