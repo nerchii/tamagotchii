@@ -234,7 +234,6 @@ public class TamagotchiApp extends Application {
                 }
             }
         };
-
     }
 
 
