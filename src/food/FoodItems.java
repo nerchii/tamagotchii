@@ -8,7 +8,7 @@ import java.util.*;
  * Foods are stored in a file and loaded into memory at runtime.
  */
 public class FoodItems {
-    private static final String filePath = "pet/logs.bin";
+    private static final String foodListFilePath = "foodList.txt";
     private Set<String> foodSet = new HashSet<>();
 
     public FoodItems() {
@@ -17,8 +17,7 @@ public class FoodItems {
 
     /** Loads food items from the file into memory */
     private void loadFoodsFromFile() {
-        String foodList = "foodList.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(foodList))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(foodListFilePath))) {
             String content = br.readLine();
             if (content != null) {
                 String[] foods = content.split(",");
@@ -34,15 +33,15 @@ public class FoodItems {
     /** Adds a new food to the file and in-memory set */
     private void addFoodToFile(String newFood) {
         try { StringBuilder sb = new StringBuilder();
-            try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            try (BufferedReader br = new BufferedReader(new FileReader(foodListFilePath))) {
                 String content = br.readLine();
                 if (content != null && !content.isEmpty()) {
                     sb.append(content);
-                    sb.append(",");
+                    sb.append(", ");
                 }
             }
             sb.append(newFood.trim().toLowerCase());
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(filePath))) {
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(foodListFilePath))) {
                 bw.write(sb.toString());
             }
         } catch (IOException e) {
@@ -82,6 +81,7 @@ public class FoodItems {
         }
         if (answer.toLowerCase().contains("no")) {
             System.out.println("Okay, ever mind.");
-        }return false;
+        }
+        return false;
     }
 }
