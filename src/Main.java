@@ -198,7 +198,7 @@ public class Main {
         }
 
         public static void rename(Pet ch) {
-            System.out.println("Are you sure you want to rename " + ch.getName());
+            System.out.println("Are you sure you want to rename " + ch.getName() + "? (yes/no):");
             String answer = sc.nextLine().toLowerCase();
 
             if (answer.equals("yes") || answer.equals("2") ){
@@ -217,4 +217,3 @@ public class Main {
             }
         }
 }
-//}
