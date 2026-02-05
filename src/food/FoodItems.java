@@ -17,7 +17,8 @@ public class FoodItems {
 
     /** Loads food items from the file into memory */
     private void loadFoodsFromFile() {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+        String foodList = "foodList.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(foodList))) {
             String content = br.readLine();
             if (content != null) {
                 String[] foods = content.split(",");
