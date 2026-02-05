@@ -5,12 +5,12 @@ import java.io.*;
  * Utility class for saving and loading {@link Pet} objects
  * to and from a binary file for persistence between sessions.
  * <p>
- * The data is stored in {@code bin/logs.bin} and automatically
+ * The data is stored in {@code pet/logs.bin} and automatically
  * serialized using Java's built-in object streams.
  * </p>
  */
 public class AUX_CLS {
-    private static final String filePath = "bin/logs.bin";
+    private static final String filePath = "pet/logs.bin";
 
 
     /**

@@ -8,7 +8,7 @@ import java.util.*;
  * Foods are stored in a file and loaded into memory at runtime.
  */
 public class FoodItems {
-    private static final String filePath = "bin/logs.bin";
+    private static final String filePath = "pet/logs.bin";
     private Set<String> foodSet = new HashSet<>();
 
     public FoodItems() {
